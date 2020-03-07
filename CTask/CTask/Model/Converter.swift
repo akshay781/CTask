@@ -9,43 +9,25 @@
 import Foundation
 
 
-struct Converter {
-    let base : String
-    let date : String
+struct Converter : Codable {
     
-    let rates : [CurrencyRate]
+    let title : String
+    let rows : [Row]
 }
 
 
 extension Converter : Parceable{
     
     static func parseObject(dictionary: [String : Any]) -> Result<Converter, ErrorResult> {
-        if let base = dictionary["base"] as? String,
-            let date = dictionary["date"] as? String,
-            let rates = dictionary["rates"] as? [String: Double] {
+        do {
+            let data = try JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)
+            let decoder = JSONDecoder()
+            let finalData = try decoder.decode(Converter.self, from: data)
             
-            let finalRates : [CurrencyRate] = rates.flatMap({ CurrencyRate(currencyIso: $0.key, rate: $0.value) })
-            let conversion = Converter(base: base, date: date, rates: finalRates)
-            
-            return Result.success(conversion)
-        } else {
-            return Result.failure(ErrorResult.parser(string: "Unable to parse conversion rate"))
+            return Result.success(finalData)
+        }catch{
+            return Result.failure(ErrorResult.parser(string: "Unable To Parse data"))
         }
     }
-    
-    
-    //    static func parseObject(dictionary: [String : AnyObject]) -> Result<Converter, ErrorResult> {
-    //        if let base = dictionary["base"] as? String,
-    //            let date = dictionary["date"] as? String,
-    //            let rates = dictionary["rates"] as? [String: Double] {
-    //
-    //            let finalRates : [CurrencyRate] = rates.flatMap({ CurrencyRate(currencyIso: $0.key, rate: $0.value) })
-    //            let conversion = Converter(base: base, date: date, rates: finalRates)
-    //
-    //            return Result.success(conversion)
-    //        } else {
-    //            return Result.failure(ErrorResult.parser(string: "Unable to parse conversion rate"))
-    //        }
-    //    }
     
 }

@@ -17,7 +17,8 @@ final class DataService : RequestHandler, DataServiceProtocol {
     
     static let shared = DataService()
     
-    let endpoint = "https://api.fixer.io/latest?base=GBP"
+    let endpoint = "https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/facts.json"
+    
     var task : URLSessionTask?
     
     func fetchConverter(_ completion: @escaping ((Result<Converter, ErrorResult>) -> Void)) {

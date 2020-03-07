@@ -20,7 +20,8 @@ final class RequestService {
         }
         
         var request = RequestFactory.request(method: .GET, url: url)
-        
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")  // the request is JSON
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Accept") 
         if let reachability = Reachability(), !reachability.isReachable {
             request.cachePolicy = .returnCacheDataDontLoad
         }
@@ -31,8 +32,9 @@ final class RequestService {
                 return
             }
             
-            if let data = data {
-                completion(.success(data))
+            print(response as Any)
+            if let data = data , let utf8Data = String(decoding: data, as: UTF8.self).data(using: .utf8){
+                completion(.success(utf8Data))
             }
         }
         task.resume()

@@ -9,19 +9,10 @@
 import Foundation
 
 
-enum Currency : String {
-    case EUR
-    case GBP
-    case USD
-}
-
-enum CurrencyLocale : String {
-    case EUR = "fr_FR"
-    case GBP = "en_UK"
-}
-
-struct CurrencyRate {
+struct Row : Codable {
     
-    let currencyIso : String
-    let rate : Double
+    var title : String?
+    var description : String?
+    var imageHref : String?
+    
 }
