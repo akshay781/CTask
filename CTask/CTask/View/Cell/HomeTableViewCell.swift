@@ -11,7 +11,7 @@ import SDWebImage
 
 class HomeTableViewCell: UITableViewCell {
     
-    
+    //MARK: Properties
     private let titleLabel : UILabel = {
         let lbl = UILabel()
         lbl.textColor = .black

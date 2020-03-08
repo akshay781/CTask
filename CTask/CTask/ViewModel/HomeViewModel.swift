@@ -10,25 +10,23 @@ import Foundation
 
 class HomeViewModel {
     
+    //MARK: Properties
     weak var dataSource : GenericDataSource<Row>?
     weak var service: DataServiceProtocol?
-    
-    var onErrorHandling : ((ErrorResult?) -> Void)?
-    
-    var onDidFinish : (()->())?
     
     var converter : Converter?{
         didSet{
             if let converter = converter{
                 self.navTitle = converter.title
                 self.dataSource?.data.value = converter.rows
-                self.onDidFinish?()
             }
         }
     }
     
     private(set) var navTitle : String?
     
+    //MARK: Closures
+    var onErrorHandling : ((ErrorResult?) -> Void)?
     
     init(service: DataServiceProtocol = DataService.shared, dataSource : GenericDataSource<Row>?) {
         self.dataSource = dataSource
@@ -46,7 +44,7 @@ class HomeViewModel {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let converter) :
-                    print("Final Converter ===> \(converter)")
+                    //print("Final Converter ===> \(converter)")
                     self.converter = converter
                     
                 case .failure(let error) :

@@ -10,6 +10,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
+    //MARK: Properties
     var tableView: UITableView = {
         let tv = UITableView()
         tv.backgroundColor = UIColor.white
@@ -22,7 +23,9 @@ class HomeViewController: UIViewController {
     
     let dataSource = RowDataSource()
     
+    //MARK: lazy loading
     lazy var viewModel : HomeViewModel = {
+        // Inject Datasource
         let viewModel = HomeViewModel(dataSource: dataSource)
         return viewModel
     }()
@@ -36,9 +39,10 @@ class HomeViewController: UIViewController {
         self.setUpNavigation()
         self.setupTableView()
         
-        
+        // Update UI
         self.dataSource.data.addAndNotify(observer: self) { [weak self] _ in
-            
+            self?.title = self?.viewModel.navTitle
+            self?.refreshControl.endRefreshing()
             self?.tableView.reloadData()
         }
         
@@ -48,13 +52,6 @@ class HomeViewController: UIViewController {
             let controller = UIAlertController(title: "An error occured", message: "Oops, something went wrong!", preferredStyle: .alert)
             controller.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
             self?.present(controller, animated: true, completion: nil)
-        }
-        
-        // update UI on succesful
-        self.viewModel.onDidFinish = { [weak self] in
-            self?.title = self?.viewModel.navTitle
-            self?.refreshControl.endRefreshing()
-            
         }
         
         self.viewModel.fetchRows()
@@ -79,8 +76,8 @@ class HomeViewController: UIViewController {
         self.view.addSubview(tableView)
         
         
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        refreshControl.addTarget(self, action: #selector(HomeViewController.actionRefresh), for: UIControl.Event.valueChanged)
+        self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl.addTarget(self, action: #selector(HomeViewController.actionRefresh), for: UIControl.Event.valueChanged)
         self.tableView.addSubview(refreshControl)
         
         NSLayoutConstraint.activate([
@@ -103,7 +100,6 @@ class HomeViewController: UIViewController {
     
     //MARK: Actions
     @objc private func actionRefresh(){
-        print("pull to feresh")
         self.viewModel.fetchRows()
     }
     

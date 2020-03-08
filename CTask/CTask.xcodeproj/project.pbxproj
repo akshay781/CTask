@@ -114,6 +114,7 @@
 		BA2321F5241214CB002495A4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BAF29FE424120070005D56E6 /* Assets.xcassets */,
 				BA2321F6241214E8002495A4 /* Reachability.swift */,
 			);
 			path = Resources;
@@ -147,7 +148,6 @@
 				BAF29FF1241200EC005D56E6 /* Model */,
 				BAF29FF0241200E5005D56E6 /* ViewModel */,
 				BAF29FEF241200C4005D56E6 /* View */,
-				BAF29FE424120070005D56E6 /* Assets.xcassets */,
 				BAF29FE624120070005D56E6 /* LaunchScreen.storyboard */,
 				BAF29FE924120070005D56E6 /* Info.plist */,
 			);

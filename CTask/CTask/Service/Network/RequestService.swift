@@ -32,7 +32,6 @@ final class RequestService {
                 return
             }
             
-            print(response as Any)
             if let data = data , let utf8Data = String(decoding: data, as: UTF8.self).data(using: .utf8){
                 completion(.success(utf8Data))
             }
