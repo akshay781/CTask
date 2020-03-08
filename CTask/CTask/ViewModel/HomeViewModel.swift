@@ -12,6 +12,7 @@ import Foundation
 
 class HomeViewModel {
     
+    weak var dataSource : GenericDataSource<Row>?
     weak var service: DataServiceProtocol?
     
     var onErrorHandling : ((ErrorResult?) -> Void)?
@@ -21,15 +22,18 @@ class HomeViewModel {
     var converter : Converter?{
         didSet{
             if let converter = converter{
-                self.rows = converter.rows
+                self.navTitle = converter.title
+                self.dataSource?.data.value = converter.rows
                 self.onDidFinish?()
             }
         }
     }
     
-    public var rows : [Row] = [Row]()
+    private(set) var navTitle : String?
     
-    init(service: DataServiceProtocol = DataService.shared) {
+    
+    init(service: DataServiceProtocol = DataService.shared, dataSource : GenericDataSource<Row>?) {
+        self.dataSource = dataSource
         self.service = service
     }
     
@@ -46,6 +50,7 @@ class HomeViewModel {
                 case .success(let converter) :
                     print("Final Converter ===> \(converter)")
                     self.converter = converter
+                    
                 case .failure(let error) :
                     self.onErrorHandling?(error)
                 }
