@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class HomeTableViewCell: UITableViewCell {
     
@@ -23,8 +24,8 @@ class HomeTableViewCell: UITableViewCell {
     
     private let bodyLabel : UILabel = {
         let lbl = UILabel()
-        lbl.textColor = .black
-        lbl.font = UIFont.boldSystemFont(ofSize: 16)
+        lbl.textColor = .gray
+        lbl.font = UIFont.systemFont(ofSize: 14)
         lbl.translatesAutoresizingMaskIntoConstraints = false // enable autolayout
         lbl.textAlignment = .left
         lbl.numberOfLines = 0
@@ -47,17 +48,29 @@ class HomeTableViewCell: UITableViewCell {
     
     var row : Row? {
         didSet{
-            if let row = row {
-                self.titleLabel.text = row.title ?? "title"
-                self.bodyLabel.text = row.description ?? "Description"
+            guard let row = row else {
+                return
             }
+            
+            self.titleLabel.text = row.title ?? ""
+            
+            self.bodyLabel.text = row.description ?? ""
+            
+            if let image = row.imageHref{
+                self.descImageView.sd_setImage(with: URL(string: image), placeholderImage: UIImage(named: "App-Default"),options: SDWebImageOptions(rawValue: 0), completed: { (image, error, cacheType, imageURL) in
+                    // Perform operation.
+                })
+                
+                
+            }
+            
         }
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        //setupView()
+        setupView()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -65,5 +78,45 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     
-    
+    private func  setupView(){
+        
+        self.contentView.addSubview(titleLabel)
+        self.contentView.addSubview(descImageView)
+        self.contentView.addSubview(bodyLabel)
+        
+        var allConstraints: [NSLayoutConstraint] = []
+        
+        let views: [String: Any] = [
+            "title": titleLabel,
+            "body": bodyLabel,
+            "image": descImageView]
+        
+        let const1 = NSLayoutConstraint.constraints(
+            withVisualFormat: "H:|-5-[image(40)]-5-[title]-5-|",
+            metrics: nil,
+            views: views)
+        allConstraints += const1
+        
+        let const2 = NSLayoutConstraint.constraints(
+            withVisualFormat: "H:|-5-[image]-5-[body]-5-|",
+            metrics: nil,
+            views: views)
+        allConstraints += const2
+        let const3 = NSLayoutConstraint.constraints(
+            withVisualFormat: "V:|-5-[title]-5-[body]-(>=5)-|",
+            metrics: nil,
+            views: views)
+        allConstraints += const3
+        
+        let const4 = NSLayoutConstraint.constraints(
+            withVisualFormat: "V:|-5-[image(41)]-(>=5)-|",
+            metrics: nil,
+            views: views)
+        allConstraints += const4
+        
+        
+        self.contentView.addConstraints(allConstraints)
+        
+    }
+
 }
