@@ -31,7 +31,7 @@ class RowDataSource : GenericDataSource<Row>, UITableViewDataSource {
         
         let row = self.data.value[indexPath.row]
         cell.row = row
-        
+        cell.selectionStyle = .none
         return cell
     }
 }

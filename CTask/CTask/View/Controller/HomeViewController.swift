@@ -17,6 +17,9 @@ class HomeViewController: UIViewController {
         return tv
     }()
     
+    
+    var refreshControl = UIRefreshControl()
+    
     let dataSource = RowDataSource()
     
     lazy var viewModel : HomeViewModel = {
@@ -24,14 +27,18 @@ class HomeViewController: UIViewController {
         return viewModel
     }()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        self.setupTableView()
+        
         self.setUpNavigation()
+        self.setupTableView()
+        
         
         self.dataSource.data.addAndNotify(observer: self) { [weak self] _ in
+            
             self?.tableView.reloadData()
         }
         
@@ -46,9 +53,11 @@ class HomeViewController: UIViewController {
         // update UI on succesful
         self.viewModel.onDidFinish = { [weak self] in
             self?.title = self?.viewModel.navTitle
+            self?.refreshControl.endRefreshing()
+            
         }
         
-        self.viewModel.fetchCurrencies()
+        self.viewModel.fetchRows()
     }
     
     
@@ -65,10 +74,14 @@ class HomeViewController: UIViewController {
     private func setupTableView(){
         
         self.tableView.dataSource = self.dataSource
-    
         self.tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: HomeTableViewCell.identifier)
         
         self.view.addSubview(tableView)
+        
+        
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(HomeViewController.actionRefresh), for: UIControl.Event.valueChanged)
+        self.tableView.addSubview(refreshControl)
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
@@ -84,6 +97,14 @@ class HomeViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = UIColor.init(red: 0.24, green: 0.76, blue: 0.83, alpha: 1)
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.init(red: 1, green: 1, blue: 1, alpha: 1)]
+        
+    }
+    
+    
+    //MARK: Actions
+    @objc private func actionRefresh(){
+        print("pull to feresh")
+        self.viewModel.fetchRows()
     }
     
 }

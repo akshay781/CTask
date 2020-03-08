@@ -8,8 +8,6 @@
 
 import Foundation
 
-
-
 class HomeViewModel {
     
     weak var dataSource : GenericDataSource<Row>?
@@ -37,7 +35,7 @@ class HomeViewModel {
         self.service = service
     }
     
-    func fetchCurrencies() {
+    func fetchRows() {
         
         guard let service = service else {
             onErrorHandling?(ErrorResult.custom(string: "Missing service"))
