@@ -3,12 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		296543EACF75BBB66822179F /* Pods_CTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 870F7EF87B4B7F5A2DB560C1 /* Pods_CTask.framework */; };
 		474FC4E624137E46003810E2 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474FC4E524137E46003810E2 /* HomeViewModel.swift */; };
+		474FC4E92413E411003810E2 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474FC4E82413E410003810E2 /* HomeTableViewCell.swift */; };
 		BA2321EA24121273002495A4 /* ParserHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2321E924121273002495A4 /* ParserHelper.swift */; };
 		BA2321EC241212C9002495A4 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2321EB241212C9002495A4 /* Result.swift */; };
 		BA2321EE24121376002495A4 /* ErrorResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2321ED24121376002495A4 /* ErrorResult.swift */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		474FC4E524137E46003810E2 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		474FC4E82413E410003810E2 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		755F7901498C44CDF37A34EC /* Pods-CTask.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CTask.release.xcconfig"; path = "Target Support Files/Pods-CTask/Pods-CTask.release.xcconfig"; sourceTree = "<group>"; };
 		870F7EF87B4B7F5A2DB560C1 /* Pods_CTask.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CTask.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA2C4C9B24664686FFDAF5F1 /* Pods-CTask.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CTask.debug.xcconfig"; path = "Target Support Files/Pods-CTask/Pods-CTask.debug.xcconfig"; sourceTree = "<group>"; };
@@ -62,6 +64,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		474FC4E72413E38D003810E2 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				474FC4E82413E410003810E2 /* HomeTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		55CC0F231EDA3D0DABD52495 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -143,6 +153,7 @@
 		BAF29FEF241200C4005D56E6 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				474FC4E72413E38D003810E2 /* Cell */,
 				BAF29FF524120272005D56E6 /* Controller */,
 			);
 			path = View;
@@ -206,7 +217,6 @@
 				AA2C4C9B24664686FFDAF5F1 /* Pods-CTask.debug.xcconfig */,
 				755F7901498C44CDF37A34EC /* Pods-CTask.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -330,6 +340,7 @@
 				BAF29FDE24120053005D56E6 /* SceneDelegate.swift in Sources */,
 				BA2321F0241213FC002495A4 /* RequestFactory.swift in Sources */,
 				BA2321F924121657002495A4 /* DataService.swift in Sources */,
+				474FC4E92413E411003810E2 /* HomeTableViewCell.swift in Sources */,
 				BA2321F424121473002495A4 /* RequestHandler.swift in Sources */,
 				BA2321EE24121376002495A4 /* ErrorResult.swift in Sources */,
 				BA2321FD241217F1002495A4 /* Currency.swift in Sources */,

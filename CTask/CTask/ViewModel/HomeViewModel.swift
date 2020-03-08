@@ -10,11 +10,24 @@ import Foundation
 
 
 
-struct HomeViewModel {
+class HomeViewModel {
     
     weak var service: DataServiceProtocol?
     
     var onErrorHandling : ((ErrorResult?) -> Void)?
+    
+    var onDidFinish : (()->())?
+    
+    var converter : Converter?{
+        didSet{
+            if let converter = converter{
+                self.rows = converter.rows
+                self.onDidFinish?()
+            }
+        }
+    }
+    
+    public var rows : [Row] = [Row]()
     
     init(service: DataServiceProtocol = DataService.shared) {
         self.service = service
@@ -32,6 +45,7 @@ struct HomeViewModel {
                 switch result {
                 case .success(let converter) :
                     print("Final Converter ===> \(converter)")
+                    self.converter = converter
                 case .failure(let error) :
                     self.onErrorHandling?(error)
                 }

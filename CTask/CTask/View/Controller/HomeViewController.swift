@@ -10,6 +10,13 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
+    let tableview: UITableView = {
+        let tv = UITableView()
+        tv.backgroundColor = UIColor.white
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        return tv
+    }()
+    
     lazy var viewModel : HomeViewModel = {
         let viewModel = HomeViewModel()
         return viewModel
@@ -20,7 +27,8 @@ class HomeViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.view.backgroundColor = UIColor.white
+        self.setupTableView()
+        self.setUpNavigation()
         
         // add error handling example
         self.viewModel.onErrorHandling = { [weak self] error in
@@ -28,6 +36,12 @@ class HomeViewController: UIViewController {
             let controller = UIAlertController(title: "An error occured", message: "Oops, something went wrong!", preferredStyle: .alert)
             controller.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
             self?.present(controller, animated: true, completion: nil)
+        }
+        
+        // add error handling example
+        self.viewModel.onDidFinish = { [weak self] in
+            // display error ?
+            self?.tableview.reloadData()
         }
         
         self.viewModel.fetchCurrencies()
@@ -44,4 +58,54 @@ class HomeViewController: UIViewController {
      }
      */
     
+    private func setupTableView(){
+        
+        tableview.delegate = self
+        tableview.dataSource = self
+        
+        tableview.register(HomeTableViewCell.self, forCellReuseIdentifier: HomeTableViewCell.identifier)
+        
+        view.addSubview(tableview)
+        
+        NSLayoutConstraint.activate([
+            tableview.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            tableview.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            tableview.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor),
+            tableview.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor)
+        ])
+        
+    }
+    
+    private func setUpNavigation() {
+        self.navigationItem.title = "Canada"
+        self.navigationController?.navigationBar.barTintColor = UIColor.init(red: 0.24, green: 0.76, blue: 0.83, alpha: 1)
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.init(red: 1, green: 1, blue: 1, alpha: 1)]
+    }
+    
 }
+
+
+extension HomeViewController : UITableViewDelegate, UITableViewDataSource{
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.rows.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell : HomeTableViewCell = tableview.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier, for: indexPath) as? HomeTableViewCell else {return UITableViewCell()}
+        cell.backgroundColor = UIColor.white
+        cell.row = self.viewModel.rows[indexPath.row]
+        return cell
+    }
+    
+    
+}
+
+
+
+
