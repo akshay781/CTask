@@ -49,6 +49,7 @@ class HomeViewController: UIViewController {
         // add error handling
         self.viewModel.onErrorHandling = { [weak self] error in
             // display error ?
+            self?.refreshControl.endRefreshing()
             let controller = UIAlertController(title: "An error occured", message: "Oops, something went wrong!", preferredStyle: .alert)
             controller.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
             self?.present(controller, animated: true, completion: nil)
